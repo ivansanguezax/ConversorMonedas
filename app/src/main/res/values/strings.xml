@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">ConversorMoneda325</string>
+    <string name="textElije">Elije una moneda</string>
+    <string name="monto">Ingrese el monto</string>
+    <string name="convertir">Convertir a</string>
+    <string name="btnEnviar">Convertir</string>
+    <string-array name="divisas">
+        <item>Bolivianos</item>
+        <item>Dolares</item>
+        <item>Euros</item>
+        <item>Soles</item>
+    </string-array>
+</resources>
