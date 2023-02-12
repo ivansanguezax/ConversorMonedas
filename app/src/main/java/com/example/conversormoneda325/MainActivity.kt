@@ -14,22 +14,32 @@ class MainActivity : AppCompatActivity() {
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Referenciar los spinners y el array de divisas
         val sp1 = binding.sp1
         val sp2 = binding.sp2
         val lista = resources.getStringArray(R.array.divisas)
         val adapter = ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,lista)
 
+        // Variables para almacenar la posición seleccionada en los spinners
         var posicionSP1 = ""
         var posicionSP2 = ""
 
+        // Referenciar la entrada de texto para la cantidad y el text view para el resultado
         val cantidad = binding.etCantidad
         val resultado = binding.tvResultado
 
+        // Variable para almacenar el resultado
         var total = 0.0
 
+        val btnClear = binding.btnClear
+        val btnFinish = binding.btnFinish
+
+
+        // Establecer el adaptador para los spinners
         sp1.adapter = adapter
         sp2.adapter = adapter
 
+        // Establecer el listener para el primer spinner
         sp1.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 posicionSP1= lista[position]
@@ -39,8 +49,8 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity,"Error al traer las monedas!!",Toast.LENGTH_LONG)
                     .show()
             }
-
         }
+        // Establecer el listener para el segundo spinner
         sp2.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 posicionSP2= lista[position]
@@ -50,8 +60,8 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity,"Error al traer las monedas!!",Toast.LENGTH_LONG)
                     .show()
             }
-
         }
+
 
         binding.btnEnviar.setOnClickListener{
             if(cantidad.text.isNotEmpty()){
@@ -147,5 +157,16 @@ class MainActivity : AppCompatActivity() {
                     .show()
             }
         }
+
+        btnClear.setOnClickListener {
+            cantidad.text.clear()
+            resultado.text = ""
+        }
+
+        btnFinish.setOnClickListener {
+            finish()
+        }
+
+
     }
 }

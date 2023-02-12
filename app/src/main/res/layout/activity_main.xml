@@ -2,9 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <!--Se declaran los namespaces para los recursos de Android, de la aplicación y herramientas-->
 
     <data>
-
+        <!--Este elemento "data" es utilizado en conjunto con la biblioteca de enlaces de datos de Android para vincular datos a la IU.-->
     </data>
 
     <LinearLayout
@@ -12,6 +13,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".MainActivity">
+        <!--El contenedor principal es un LinearLayout con orientación vertical y con ancho y alto igual al tamaño del padre-->
 
         <TextView
             android:layout_width="match_parent"
@@ -23,6 +25,7 @@
             android:textStyle="bold"
             android:textColor="@color/black"
             />
+        <!--Un elemento TextView con texto centralizado y un tamaño de fuente grande-->
 
         <Spinner
             android:id="@+id/sp1"
@@ -31,6 +34,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginHorizontal="30dp"
             />
+        <!--Un elemento Spinner para elegir una opción de una lista desplegable-->
+
         <TextView
 
             android:layout_width="match_parent"
@@ -41,6 +46,8 @@
             android:textAlignment="center"
             android:textSize="25dp"
             android:textStyle="bold" />
+        <!--Un elemento TextView con texto centralizado y un tamaño de fuente grande-->
+
         <EditText
             android:id="@+id/etCantidad"
             android:layout_width="match_parent"
@@ -50,6 +57,9 @@
             android:layout_marginTop="16dp"
             android:layout_marginHorizontal="30dp"
             />
+        <!--Un elemento EditText para ingresar un valor numérico con una sugerencia "0"-->
+
+        <!-- TextView para mostrar el título "Convertir a" -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -59,6 +69,8 @@
             android:textAlignment="center"
             android:textSize="25dp"
             android:textStyle="bold" />
+
+        <!-- Spinner para seleccionar la unidad a la que se desea convertir -->
         <Spinner
             android:id="@+id/sp2"
             android:layout_width="match_parent"
@@ -66,7 +78,8 @@
             android:layout_marginTop="16dp"
             android:layout_marginHorizontal="30dp"
             />
-        
+
+        <!-- Botón para realizar la conversión -->
         <Button
             android:id="@+id/btnEnviar"
             android:layout_width="wrap_content"
@@ -79,6 +92,30 @@
             android:textSize="20sp"
             />
 
+        <Button
+            android:id="@+id/btn_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Limpiar"
+            android:backgroundTint="@color/bluespacial"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:textSize="20sp"/>
+
+        <Button
+            android:id="@+id/btn_finish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Finalizar"
+            android:backgroundTint="@color/bluespacial"
+            android:textColor="@color/black"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:textSize="20sp"/>
+
+
+        <!-- Línea divisoria -->
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
@@ -86,6 +123,8 @@
             android:layout_marginHorizontal="25dp"
             android:layout_marginTop="10dp"
             />
+
+        <!-- TextView para mostrar el resultado de la conversión -->
         <TextView
             android:id="@+id/tvResultado"
             android:layout_width="match_parent"
@@ -96,7 +135,10 @@
             android:textAlignment="center"
             android:textStyle="bold"
             android:textColor="@color/black"
-
             />
+
+        <!-- Cierre del LinearLayout principal -->
     </LinearLayout>
+
+    <!-- Cierre del archivo XML -->
 </layout>
