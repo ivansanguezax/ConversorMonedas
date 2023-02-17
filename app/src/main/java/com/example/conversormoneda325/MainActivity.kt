@@ -7,151 +7,285 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.conversormoneda325.databinding.ActivityMainBinding
+import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        val binding = ActivityMainBinding.inflate(layoutInflater) // infla la vista de la actividad en el objeto `binding`
+        setContentView(binding.root) // establece la vista de la actividad en la vista inflada por `binding`
 
-        // Referenciar los spinners y el array de divisas
-        val sp1 = binding.sp1
-        val sp2 = binding.sp2
-        val lista = resources.getStringArray(R.array.divisas)
-        val adapter = ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,lista)
+        val sp1 = binding.sp1 // obtiene el Spinner de la vista a través de `binding`
 
-        // Variables para almacenar la posición seleccionada en los spinners
-        var posicionSP1 = ""
-        var posicionSP2 = ""
+        val lista = resources.getStringArray(R.array.divisas) // obtiene una lista de cadenas de recursos de la aplicación
+        val adapter = ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,lista) // crea un adaptador para el Spinner usando la lista de cadenas
 
-        // Referenciar la entrada de texto para la cantidad y el text view para el resultado
-        val cantidad = binding.etCantidad
-        val resultado = binding.tvResultado
+        var posicionSP1 = "" // inicializa una variable para la posición del elemento seleccionado en el Spinner
 
-        // Variable para almacenar el resultado
-        var total = 0.0
+        val cantidad = binding.etCantidad // obtiene el EditText para la cantidad a convertir de la vista a través de `binding`
 
-        val btnClear = binding.btnClear
-        val btnFinish = binding.btnFinish
+        // obtiene los TextView para mostrar los resultados de la conversión
+        val resultadoBoliviano = binding.tvResultadoBoliviano
+        val resultadoChile = binding.tvResultadoPeso
+        val resultadoEuro = binding.tvResultadoEuros
+        val resultadoReal = binding.tvResultadoReales
+        val resultadoSoles = binding.tvResultadoSoles
+        val resultadoYen = binding.tvResultadoYen
+        val resultadoYuan = binding.tvResultadoYuan
+        val resultadoDolar = binding.tvResultadoDolares
 
+        // inicializa variables para los totales de la conversión para cada moneda
+        var totalBolivianos = 0.0
+        var totalChile = 0.0
+        var totalEuro = 0.0
+        var totalReal = 0.0
+        var totalSoles = 0.0
+        var totalYen = 0.0
+        var totalYuan = 0.0
+        var totalDolar = 0.0
 
-        // Establecer el adaptador para los spinners
-        sp1.adapter = adapter
-        sp2.adapter = adapter
+        val btnClear = binding.btnClear // obtiene el botón "Clear" de la vista a través de `binding`
+        val btnFinish = binding.btnFinish // obtiene el botón "Finish" de la vista a través de `binding`
 
-        // Establecer el listener para el primer spinner
-        sp1.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+        sp1.adapter = adapter // establece el adaptador creado anteriormente para el Spinner
+
+        sp1.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{ // establece un Listener para el Spinner
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                posicionSP1= lista[position]
+                posicionSP1= lista[position] // obtiene la posición del elemento seleccionado en el Spinner y la guarda en `posicionSP1`
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
-                Toast.makeText(this@MainActivity,"Error al traer las monedas!!",Toast.LENGTH_LONG)
-                    .show()
-            }
-        }
-        // Establecer el listener para el segundo spinner
-        sp2.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                posicionSP2= lista[position]
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                Toast.makeText(this@MainActivity,"Error al traer las monedas!!",Toast.LENGTH_LONG)
+                Toast.makeText(this@MainActivity,"Error al traer las monedas!!",Toast.LENGTH_LONG) // muestra un mensaje Toast si no se selecciona nada en el Spinner
                     .show()
             }
         }
 
 
+        // Aquí se establece el listener del botón "enviar"
         binding.btnEnviar.setOnClickListener{
+
+            // Se comprueba que el campo de cantidad no esté vacío
             if(cantidad.text.isNotEmpty()){
+
+                // Se utiliza la estructura "when" para comparar la variable posicionSP1 con cada caso posible
                 when(posicionSP1){
 
-//                    Cambios
                     "Bolivianos"->{
-                        when(posicionSP2){
-                            "Bolivianos"->{
-                                resultado.text = cantidad.text
+                                resultadoBoliviano.text = cantidad.text
+
+                        totalDolar = cantidad.text.toString().toFloat() * 0.144
+                        resultadoDolar.text = String.format("%.2f", totalDolar)
+
+                        totalReal = cantidad.text.toString().toFloat() * 0.75
+                        resultadoReal.text = String.format("%.2f", totalReal)
+
+                        totalEuro = cantidad.text.toString().toFloat() * 0.14
+                        resultadoEuro.text = String.format("%.2f", totalEuro)
+
+                        totalSoles = cantidad.text.toString().toFloat() * 0.56
+                        resultadoSoles.text = String.format("%.2f", totalSoles)
+
+                        totalChile = cantidad.text.toString().toFloat() * 114.45
+                        resultadoChile.text = String.format("%.2f", totalChile)
+
+                        totalYen = cantidad.text.toString().toFloat() * 19.37
+                        resultadoYen.text = String.format("%.2f", totalYen)
+
+                        totalYuan = cantidad.text.toString().toFloat() * 0.99
+                        resultadoYuan.text = String.format("%.2f", totalYuan)
                             }
-                            "Dolares"->{
-                                total = cantidad.text.toString().toFloat() * .14
-                                resultado.text = total.toString()
-                            }
-                            "Euros"->{
-                                total = cantidad.text.toString().toFloat() * .14
-                                resultado.text = total.toString()
-                            }
-                            "Soles"->{
-                                total = cantidad.text.toString().toFloat() * .56
-                                resultado.text = total.toString()
-                            }
-                        }
+
+
+
+
+                    "Dolares"-> {
+                    resultadoDolar.text = cantidad.text
+
+                    totalBolivianos = cantidad.text.toString().toFloat() * 6.96
+                    resultadoBoliviano.text = totalBolivianos.toString()
+
+                    totalReal = cantidad.text.toString().toFloat() * 4.43
+                    resultadoReal.text = totalReal.toString()
+
+                    totalEuro = cantidad.text.toString().toFloat() * 0.82
+                    resultadoEuro.text = totalEuro.toString()
+
+                    totalSoles = cantidad.text.toString().toFloat() * 3.29
+                    resultadoSoles.text = totalSoles.toString()
+
+                    totalChile = cantidad.text.toString().toFloat() * 672.44
+                    resultadoChile.text = totalChile.toString()
+
+                    totalYen = cantidad.text.toString().toFloat() * 113.41
+                    resultadoYen.text = totalYen.toString()
+
+                    totalYuan = cantidad.text.toString().toFloat() * 6.14
+                    resultadoYuan.text = totalYuan.toString()
+
                     }
 
-//                    ------Cambio-----
+                    "Euros"-> {
+                        resultadoEuro.text = cantidad.text
 
-                    "Dolares"->{
-                        when(posicionSP2){
-                            "Bolivianos"->{
-                                total = cantidad.text.toString().toFloat() * 6.91
-                                resultado.text = total.toString()
-                            }
-                            "Dolares"->{
-                                resultado.text = cantidad.text
-                            }
-                            "Euros"->{
-                                total = cantidad.text.toString().toFloat() * .93
-                                resultado.text = total.toString()
-                            }
-                            "Soles"->{
-                                total = cantidad.text.toString().toFloat() * 3.86
-                                resultado.text = total.toString()
-                            }
-                        }
-                    }
-//                    ------Cambio-----
+                        totalBolivianos = cantidad.text.toString().toFloat() * 7.29
+                        resultadoBoliviano.text = String.format("%.2f", totalBolivianos)
 
-                    "Euros"->{
-                        when(posicionSP2){
-                            "Bolivianos"->{
-                                total = cantidad.text.toString().toFloat() * 7.39
-                                resultado.text = total.toString()
-                            }
-                            "Dolares"->{
-                                total = cantidad.text.toString().toFloat() * 1.07
-                                resultado.text = total.toString()
-                            }
-                            "Euros"->{
-                                resultado.text = cantidad.text
-                            }
-                            "Soles"->{
-                                total = cantidad.text.toString().toFloat() * 4.13
-                                resultado.text = total.toString()
-                            }
-                        }
-                    }
-//                    ------Cambio-----
+                        totalReal = cantidad.text.toString().toFloat() * 5.36
+                        resultadoReal.text = String.format("%.2f", totalReal)
 
-                    "Soles"->{
-                        when(posicionSP2){
-                            "Bolivianos"->{
-                                total = cantidad.text.toString().toFloat() * 1.79
-                                resultado.text = total.toString()
-                            }
-                            "Dolares"->{
-                                total = cantidad.text.toString().toFloat() * .26
-                                resultado.text = total.toString()
-                            }
-                            "Euros"->{
-                                total = cantidad.text.toString().toFloat() * .24
-                                resultado.text = total.toString()
-                            }
-                            "Soles"->{
-                                resultado.text = cantidad.text
-                            }
-                        }
+                        totalDolar = cantidad.text.toString().toFloat() * 1.22
+                        resultadoDolar.text = String.format("%.2f", totalDolar)
+
+                        totalSoles = cantidad.text.toString().toFloat() * 3.98
+                        resultadoSoles.text = String.format("%.2f", totalSoles)
+
+                        totalChile = cantidad.text.toString().toFloat() * 817.26
+                        resultadoChile.text = String.format("%.2f", totalChile)
+
+                        totalYen = cantidad.text.toString().toFloat() * 137.85
+                        resultadoYen.text = String.format("%.2f", totalYen)
+
+                        totalYuan = cantidad.text.toString().toFloat() * 7.48
+                        resultadoYuan.text = totalYuan.roundToInt().toString()
+
+
                     }
+
+                    "Soles"-> {
+                        resultadoSoles.text = cantidad.text
+
+                        totalBolivianos = cantidad.text.toString().toFloat() * 1.78
+                        resultadoBoliviano.text = String.format("%.2f", totalBolivianos)
+
+                        totalReal = cantidad.text.toString().toFloat() * 1.34
+                        resultadoReal.text = String.format("%.2f", totalReal)
+
+                        totalDolar = cantidad.text.toString().toFloat() * 0.30
+                        resultadoDolar.text = String.format("%.2f", totalDolar)
+
+                        totalEuro = cantidad.text.toString().toFloat() * 0.25
+                        resultadoEuro.text = String.format("%.2f", totalEuro)
+
+                        totalChile = cantidad.text.toString().toFloat() * 204.34
+                        resultadoChile.text = String.format("%.2f", totalChile)
+
+                        totalYen = cantidad.text.toString().toFloat() * 34.52
+                        resultadoYen.text = String.format("%.2f", totalYen)
+
+                        totalYuan = cantidad.text.toString().toFloat() * 1.87
+                        resultadoYuan.text = String.format("%.2f", totalYuan)
+
+
+                    }
+
+                    "Reales"-> {
+                        resultadoReal.text = cantidad.text
+
+                        totalBolivianos = cantidad.text.toString().toFloat() * 1.33
+                        resultadoBoliviano.text = String.format("%.2f", totalBolivianos)
+
+                        totalSoles = cantidad.text.toString().toFloat() * 0.75
+                        resultadoSoles.text = String.format("%.2f", totalSoles)
+
+                        totalDolar = cantidad.text.toString().toFloat() * 0.23
+                        resultadoDolar.text = String.format("%.2f", totalDolar)
+
+                        totalEuro = cantidad.text.toString().toFloat() * 0.19
+                        resultadoEuro.text = String.format("%.2f", totalEuro)
+
+                        totalChile = cantidad.text.toString().toFloat() * 152.39
+                        resultadoChile.text = String.format("%.2f", totalChile)
+
+                        totalYen = cantidad.text.toString().toFloat() * 25.76
+                        resultadoYen.text = String.format("%.2f", totalYen)
+
+                        totalYuan = cantidad.text.toString().toFloat() * 1.39
+                        resultadoYuan.text = String.format("%.2f", totalYuan)
+
+
+                    }
+
+                    "Peso Chilenos"-> {
+                        resultadoChile.text = cantidad.text
+
+                        totalBolivianos = cantidad.text.toString().toFloat() * 0.0087
+                        resultadoBoliviano.text = String.format("%.2f", totalBolivianos)
+
+                        totalSoles = cantidad.text.toString().toFloat() * 0.0049
+                        resultadoSoles.text = String.format("%.2f", totalSoles)
+
+                        totalDolar = cantidad.text.toString().toFloat() * 0.0015
+                        resultadoDolar.text = String.format("%.2f", totalDolar)
+
+                        totalEuro = cantidad.text.toString().toFloat() * 0.0012
+                        resultadoEuro.text = String.format("%.2f", totalEuro)
+
+                        totalReal = cantidad.text.toString().toFloat() * 0.0066
+                        resultadoReal.text = String.format("%.2f", totalReal)
+
+                        totalYen = cantidad.text.toString().toFloat() * 0.17
+                        resultadoYen.text = String.format("%.2f", totalYen)
+
+                        totalYuan = cantidad.text.toString().toFloat() * 0.0093
+                        resultadoYuan.text = String.format("%.2f", totalYuan)
+
+                    }
+
+                    "Yen Japones"-> {
+                        resultadoYen.text = cantidad.text
+
+                        totalBolivianos = cantidad.text.toString().toFloat() * 7.29
+                        resultadoBoliviano.text = String.format("%.2f", totalBolivianos)
+
+                        totalReal = cantidad.text.toString().toFloat() * 5.36
+                        resultadoReal.text = String.format("%.2f", totalReal)
+
+                        totalDolar = cantidad.text.toString().toFloat() * 1.22
+                        resultadoDolar.text = String.format("%.2f", totalDolar)
+
+                        totalSoles = cantidad.text.toString().toFloat() * 3.98
+                        resultadoSoles.text = String.format("%.2f", totalSoles)
+
+                        totalChile = cantidad.text.toString().toFloat() * 817.26
+                        resultadoChile.text = String.format("%.2f", totalChile)
+
+                        totalEuro = cantidad.text.toString().toFloat() * 137.85
+                        resultadoEuro.text = String.format("%.2f", totalEuro)
+
+                        totalYuan = cantidad.text.toString().toFloat() * 7.48
+                        resultadoYuan.text = String.format("%.2f", totalYuan)
+
+                    }
+
+                    "Yuan China"-> {
+                        resultadoYuan.text = cantidad.text
+
+                        totalBolivianos = cantidad.text.toString().toFloat() * 1.01
+                        resultadoBoliviano.text = "{:.2f}".format(totalBolivianos)
+
+                        totalSoles = cantidad.text.toString().toFloat() * 0.52
+                        resultadoSoles.text = "{:.2f}".format(totalSoles)
+
+                        totalDolar = cantidad.text.toString().toFloat() * 0.16
+                        resultadoDolar.text = "{:.2f}".format(totalDolar)
+
+                        totalEuro = cantidad.text.toString().toFloat() * 0.13
+                        resultadoEuro.text = "{:.2f}".format(totalEuro)
+
+                        totalReal = cantidad.text.toString().toFloat() * 0.69
+                        resultadoReal.text = "{:.2f}".format(totalReal)
+
+                        totalChile = cantidad.text.toString().toFloat() * 105.7
+                        resultadoChile.text = "{:.2f}".format(totalChile)
+
+                        totalYen = cantidad.text.toString().toFloat() * 19.33
+                        resultadoYen.text = "{:.2f}".format(totalYen)
+
+                    }
+
+
                 }
+
             }else{
                 Toast.makeText(this@MainActivity,"Ingrese una cantidad!!",Toast.LENGTH_LONG)
                     .show()
@@ -160,9 +294,15 @@ class MainActivity : AppCompatActivity() {
 
         btnClear.setOnClickListener {
             cantidad.text.clear()
-            resultado.text = ""
+            resultadoBoliviano.text = ""
+            resultadoChile.text = ""
+            resultadoEuro.text = ""
+            resultadoReal.text = ""
+            resultadoSoles.text = ""
+            resultadoYen.text = ""
+            resultadoYuan.text = ""
+            resultadoDolar.text = ""
         }
-
         btnFinish.setOnClickListener {
             finish()
         }

@@ -9,5 +9,9 @@
         <item>Dolares</item>
         <item>Euros</item>
         <item>Soles</item>
+        <item>Reales</item>
+        <item>Peso Chilenos</item>
+        <item>Yen Japones</item>
+        <item>Yuan China</item>
     </string-array>
 </resources>
